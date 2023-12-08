@@ -1,15 +1,21 @@
 import React from 'react';
 import { StyledList, ContactItem, DeletButton } from './contactList.styled';
 
-export const ContactList = ({ getVisibleContact, handleDelete }) => {
+import { useSelector, useDispatch } from 'react-redux';
+import { getVisibleContact } from 'redux/selectors';
+import { removeContact } from 'redux/contactsSlice';
+
+export const ContactList = () => {
+  const contacts = useSelector(getVisibleContact);
+  const dispatch = useDispatch();
+  const handleDelete = () => dispatch(removeContact());
+
   return (
     <StyledList>
-      {getVisibleContact.map(contact => (
-        <ContactItem key={contact.id}> 
+      {contacts.map(contact => (
+        <ContactItem key={contact.id}>
           {contact.name}: {contact.number}{' '}
-          <DeletButton onClick={() => handleDelete(contact.id)}>
-            Delete
-          </DeletButton>
+          <DeletButton onClick={handleDelete}>Delete</DeletButton>
         </ContactItem>
       ))}
     </StyledList>
